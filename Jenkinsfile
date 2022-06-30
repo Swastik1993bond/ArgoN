@@ -7,26 +7,16 @@ node {
         checkout scm
     }
 
-    stage('Build image') {
+    stage('Build & tag image') {
   
-       app = docker.build("testgitops/test")
-    }
-
-    stage('Test image') {
-  
-
-        app.inside {
-            sh 'echo "Tests passed"'
-        }
+       cd ArgoN/
+       docker build -t test .
+       docker tag test swastik93/devops-learning1993:${BUILD_NUMBER}
+       
     }
 
     stage('Push image') {
-        enviornmet{
-            registryCredential = 'dockerhub'
-        }
-        
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            app.push("${env.BUILD_NUMBER}")
-        }
+       docker login -u swastik93 -p Jamesbond@007
+       docker push swastik93/devops-learning1993:${BUILD_NUMBER}
     }
 }
