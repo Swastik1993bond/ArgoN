@@ -8,16 +8,16 @@ node {
      sh '''
        #!/bin/bash
        cd ArgoN/
-       docker build -t test .
-       docker tag test swastik93/devops-learning1993:${BUILD_NUMBER}
-       docker rmi python:3.8-slim-buster
+       docker build -t argon .
+       docker tag test swastik93/nginx:${BUILD_NUMBER}
+       docker rmi nginx
       ''' 
     }
     stage('Push image') {
      sh '''
        #!/bin/bash
        docker login -u swastik93 -p Jamesbond@007
-       docker push swastik93/devops-learning1993:${BUILD_NUMBER}
+       docker push swastik93/nginx:${BUILD_NUMBER}
        '''
     }
 }
