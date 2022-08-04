@@ -1,6 +1,7 @@
 node{
+  def app
       stage('Clone repository') {
-        git branch: 'master', credentialsId: '', url: 'https://github.com/Swastik1993bond/ArgoN.git'
+        checkout scm
       }
       stage('Build & Tag image') {
       sh '''
@@ -12,18 +13,14 @@ node{
         ''' 
       }
       stage('Push Image to Dockerhub') {
-        withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_PASSWORD', usernameVariable: 'docker_USERNAME')])
+        withDockerRegistry(credentialsId: 'docker', url: 'https://hub.docker.com/') 
         {
-        sh '''
-        #!/bin/bash
-        docker login -u ${docker_USERNAME} -p ${docker_PASSWORD}
-        docker push swastik93/nginx:${BUILD_NUMBER}
-        '''
-        }
+        app.push("${env.BUILD_NUMBER}")
+            }
       }
       
       stage('Update manifest -repo') {
-        withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')])
+        withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')])
         {
         sh '''
           #!/bin/bash
