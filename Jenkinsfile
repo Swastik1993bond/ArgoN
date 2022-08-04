@@ -9,7 +9,7 @@ node {
        cd ArgoN/
        docker build -t argon .
        docker tag argon swastik93/nginx:${BUILD_NUMBER}
-       docker rmi nginx
+       docker rmi nginx:alpine
       ''' 
     }
     stage('Push image') {
