@@ -6,7 +6,6 @@ node{
       stage('Build & Tag image') {
       sh '''
        #!/bin/bash
-       cd ArgoN/
        docker build -t argon .
        docker tag argon swastik93/nginx:${BUILD_NUMBER}
        docker rmi nginx:alpine
