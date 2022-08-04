@@ -1,6 +1,5 @@
 node {
     def app
-
     stage('Clone repository') {
         checkout scm
     }
@@ -9,7 +8,7 @@ node {
        #!/bin/bash
        cd ArgoN/
        docker build -t argon .
-       docker tag test swastik93/nginx:${BUILD_NUMBER}
+       docker tag argon swastik93/nginx:${BUILD_NUMBER}
        docker rmi nginx
       ''' 
     }
